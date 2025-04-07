@@ -49,6 +49,6 @@ CREATE TABLE workout_data_shared(
 	user_id SERIAL,
 	shared_with SERIAL,
 	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id),
-	FOREIGN KEY (user_id) REFERENCES users(user_id),
-	FOREIGN KEY (shared_with) REFERENCES users(user_id)
+	FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+	FOREIGN KEY (shared_with) REFERENCES users(user_id) ON DELETE CASCADE
 )
