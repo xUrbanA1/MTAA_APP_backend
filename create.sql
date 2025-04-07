@@ -18,7 +18,7 @@ CREATE TABLE friend_list(
 CREATE TABLE workouts(
 	workout_id SERIAL PRIMARY KEY,
 	workout_name VARCHAR(255),
-	workout_start timestamptz
+	workout_start TIMESTAMP
 );
 
 CREATE TABLE workouts_participants(
@@ -36,7 +36,7 @@ CREATE TABLE workout_data_sample(
 	sample_id SERIAL,
 	workout_id SERIAL,
 	user_id SERIAL,
-	sample_time timestampz,
+	sample_time TIMESTAMP,
 	position_lat FLOAT,
 	position_lon FLOAT,
 	PRIMARY KEY (sample_id, workout_id),
