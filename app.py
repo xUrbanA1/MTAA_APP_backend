@@ -1,21 +1,30 @@
-from flask import Flask
-import psycopg2
 import os
+from dotenv import load_dotenv
+from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from database import database, init_db, User, Friend, Workout, WorkoutParticipant, WorkoutDataSample, WorkoutDataShared
+from auth import auth
 
-url = os.environ.get("DATABASE_URL")
-db_conn = psycopg2.connect(url)
+
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+init_db(app)
+
+app.register_blueprint(database)
+app.register_blueprint(auth)
+
+app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')
+jwt = JWTManager(app)
 
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
+
 @app.get("/dbtest")
+@jwt_required()
 def dbtest():
-    query = 'SELECT VERSION()'
-    with db_conn:
-        with db_conn.cursor() as cursor:
-            cursor.execute(query)
-            version = cursor.fetchone()[0]
-        return {"version": version}, 201
+    users = User.query.all()
+    return jsonify([{'user_id': user.user_id, 'user_name': user.user_name, 'email': user.email} for user in users])
