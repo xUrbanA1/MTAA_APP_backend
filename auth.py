@@ -1,5 +1,5 @@
 import io
-from flask import Flask, request, jsonify, Blueprint, send_file
+from flask import request, jsonify, Blueprint, send_file
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from database import *
@@ -14,13 +14,6 @@ bcrypt = Bcrypt()
 # changeUsername +
 # changePhoto +
 # deleteUser +
-#
-# makeFriendRequest
-# notifyFriend
-# accept/rejectRequest
-# removeFriend
-
-
 
 @auth.post("/auth/register")
 def createUser():
@@ -116,6 +109,7 @@ def get_photo():
         download_name="image.jpg",
         mimetype="image/jpg"
 )
+
 
 @auth.delete('/user/change/delete')
 @jwt_required()
