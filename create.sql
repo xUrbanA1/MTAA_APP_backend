@@ -24,9 +24,9 @@ CREATE TABLE workouts(
 CREATE TABLE workout_participants(
 	workout_id INTEGER,
 	user_id INTEGER,
-	--total_distance FLOAT,
-	--avg_speed FLOAT,
-	--max_speed FLOAT,
+	total_distance FLOAT,
+	avg_speed FLOAT,
+	max_speed FLOAT,
 	PRIMARY KEY (workout_id, user_id),
 	FOREIGN KEY (user_id) REFERENCES users(user_id)ON DELETE CASCADE,
 	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id) ON DELETE CASCADE

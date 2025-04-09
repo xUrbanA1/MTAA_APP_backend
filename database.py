@@ -43,9 +43,16 @@ class Workout(db.Model):
     def __repr__(self):
         return f'<Workout {self.workout_name}>'
 
+    def serialize(self):
+        return {
+            'workout_id': self.workout_id, 
+            'workout_name': self.workout_name,
+            'workout_start': self.workout_start,
+        }
+    
 # Define the 'workouts_participants' table
 class WorkoutParticipant(db.Model):
-    __tablename__ = 'workouts_participants'
+    __tablename__ = 'workout_participants'
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
     total_distance = db.Column(db.Float)
@@ -54,6 +61,15 @@ class WorkoutParticipant(db.Model):
 
     def __repr__(self):
         return f'<WorkoutParticipant {self.workout_id} - {self.user_id}>'
+    
+    def serialize(self):
+        return {
+            'workout_id': self.workout_id, 
+            'user_id': self.user_id,
+            'total_distance': self.total_distance,
+            'avg_speed': self.avg_speed,
+            'max_speed': self.max_speed,
+        }
 
 # Define the 'workout_data_sample' table
 class WorkoutDataSample(db.Model):
@@ -67,6 +83,16 @@ class WorkoutDataSample(db.Model):
 
     def __repr__(self):
         return f'<WorkoutDataSample {self.sample_id}>'
+    
+    def serialize(self):
+        return {
+            'sample_id': self.sample_id,
+            'workout_id': self.workout_id, 
+            'user_id': self.user_id,
+            'sample_time': self.sample_time,
+            'position_lat': self.position_lat,
+            'position_lon': self.position_lon,
+        }
 
 # Define the 'workout_data_shared' table
 class WorkoutDataShared(db.Model):
