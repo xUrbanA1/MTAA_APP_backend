@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from database import *
 from auth import auth
 from friends import friends
+from workout import workout
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ init_db(app)
 app.register_blueprint(database)
 app.register_blueprint(auth)
 app.register_blueprint(friends)
+app.register_blueprint(workout)
 
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)

@@ -21,27 +21,27 @@ CREATE TABLE workouts(
 	workout_start TIMESTAMP
 );
 
-CREATE TABLE workouts_participants(
-	workout_id SERIAL,
-	user_id SERIAL,
+CREATE TABLE workout_participants(
+	workout_id INTEGER,
+	user_id INTEGER,
 	total_distance FLOAT,
 	avg_speed FLOAT,
 	max_speed FLOAT,
 	PRIMARY KEY (workout_id, user_id),
-	FOREIGN KEY (user_id) REFERENCES users(user_id),
-	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
+	FOREIGN KEY (user_id) REFERENCES users(user_id)ON DELETE CASCADE,
+	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id) ON DELETE CASCADE
 );
 
 CREATE TABLE workout_data_sample(
 	sample_id SERIAL,
-	workout_id SERIAL,
-	user_id SERIAL,
+	workout_id INTEGER,
+	user_id INTEGER,
 	sample_time TIMESTAMP,
 	position_lat FLOAT,
 	position_lon FLOAT,
 	PRIMARY KEY (sample_id, workout_id),
-	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id),
-	FOREIGN KEY (user_id) REFERENCES users(user_id)
+	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id) ON DELETE CASCADE,
+	FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE workout_data_shared(
