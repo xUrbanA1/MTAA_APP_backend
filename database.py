@@ -97,7 +97,7 @@ class WorkoutDataSample(db.Model):
 # Define the 'workout_data_shared' table
 class WorkoutDataShared(db.Model):
     __tablename__ = 'workout_data_shared'
-    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id'), primary_key=True)
+    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id', ondelete='CASCADE'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
     shared_with = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
 
