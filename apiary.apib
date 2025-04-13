@@ -9,52 +9,91 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Create User [POST /auth/register]
 
 + Request (application/json)
+    + Attributes
 
-        {
-        "username": "John Doe",
-        "email": "john@example.com",
-        "password": "securepassword123"
-        }
+        + username: John Doe (string) - User's chosen username
+        + email: john@example.com (string) - User's email address
+        + password: securepassword123 (string) - User's password
+        
+    + Body
+
+            {
+            "username": "John Doe",
+            "email": "john@example.com",
+            "password": "securepassword123"
+            }
 
 + Response 201 (application/json)
+    + Attributes
 
-        {
-        "message": "User added successfully"
-        }
+        + message: User added successfully (string)- Confirmation message
+    
+    + Body    
+        
+            {
+            "message": "User added successfully"
+            }
 
 + Response 409 (application/json)
+    + Attributes
 
-        {
-        "message": "Email already exists"
-        }
+        + message: Email already exists (string)- Error message
+    
+    + Body    
         
+            {
+            "message": "Email already exists"
+            }
+            
 + Response 400 (application/json)        
-        
-        {
-        "message": "Some information missing"
-        } 
+    + Attributes
+
+        + message: Some information missing (string)- Error message
+
+    + Body
+    
+            {
+            "message": "Some information missing"
+            } 
 
 ### Login [POST /auth/login]
 
 + Request (application/json)
+    + Attributes
 
-        {
-        "email": "john@example.com",
-        "password": "securepassword123"
-        }
+        + email: john@example.com (string) - User's email address
+        + password: securepassword123 (string) - User's password
+        
+    + Body
+
+            {
+            "email": "john@example.com",
+            "password": "securepassword123"
+            }
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "token": "jwt_token",
-        "user_id": 1
-        }
+        + token: "jwt_token" (string) - JWT token for authentification 
+        + user_id: 1 (string) - User's id
+        
+    + Body
+
+            {
+            "token": "jwt_token",
+            "user_id": 1
+            }
 
 + Response 401 (application/json)
+    + Attributes
 
-        {
-        "msg": "Bad email or password"
-        }
+        + message: Bad email or password (string)- Error message.
+
+    + Body
+    
+            {
+            "message": "Bad email or password"
+            }
 
 ### Get Current User [GET /auth/getuser]
 + Request
@@ -63,18 +102,29 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             Authorization: Bearer jwt_token
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "user_id": 1,
-        "user_name": "John Doe",
-        "email": "john@example.com"
-        }
+        + username: John Doe (string) - User's chosen username
+        + email: john@example.com (string) - User's email address
+        + password: securepassword123 (string) - User's password
+
+    + Body
+
+            {
+            "user_id": 1,
+            "user_name": "John Doe",
+            "email": "john@example.com"
+            }
 
 
 ## User management [/user]
 ### Change Username [PATCH /user/change/username]
 
 + Request (application/json)
+    + Attributes
+
+        + username: new_username (string) - User's new username
+        
     + Headers
 
             Authorization: Bearer jwt_token
@@ -86,20 +136,34 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "message": "Username changed"
-        }
+        + message: Username changed (string)- Confirmation message
+
+    + Body
+
+            {
+            "message": "Username changed"
+            }
 
 + Response 400 (application/json)
+    + Attributes
 
-        {
-        "message": "No username entered"
-        }
+        + message: No username entered (string)- Error message
+
+    + Body
+
+            {
+            "message": "No username entered"
+            }
 
 ### Change Password [PATCH /user/change/password]
 
 + Request (application/json)
+   + Attributes
+
+        + password: new_password (string)- User's new password
+   
     + Headers
 
             Authorization: Bearer jwt_token
@@ -111,16 +175,26 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "message": "Password changed"
-        }
+        + message: Password changed (string)- Confirmation message
+
+    + Body
+
+            {
+            "message": "Password changed"
+            }
 
 + Response 400 (application/json)
+    + Attributes
 
-        {
-        "message": "No password entered"
-        }
+        + message: No password entered (string)- Error message
+
+    + Body
+    
+            {
+            "message": "No password entered"
+            }
 
 ### Upload Profile Photo [PATCH /user/change/photo]
 
@@ -134,16 +208,26 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             (binary image data)
 
 + Response 201 (application/json)
+    + Attributes
 
-        {
-        "msg": "File uploaded successfully!"
-        }
+        + message: File uploaded successfully! (string)- Confirmation message
+
+    + Body
+    
+            {
+            "msg": "File uploaded successfully!"
+            }
 
 + Response 400 (application/json)
+    + Attributes
 
-        {
-        "error": "No file provided"
-        }
+        + message: No file provided (string)- Error message
+
+    + Body
+    
+            {
+            "error": "No file provided"
+            }
 
 ### Get Profile Photo [GET /user/get/photo]
 
@@ -157,14 +241,23 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
         (binary image content)
 
 + Response 404 (application/json)
+    + Attributes
 
-        {
-        "error": "No profile picture provided"
-        }
+        + message: No profile picture provided (string)- Error message
+
+    + Body
+
+            {
+            "error": "No profile picture provided"
+            }
 
 ### Delete User Account [DELETE /user/change/delete]
 
 + Request (application/json)
+    + Attributes
+
+        + password: securepassword123 (string)- User's password
+
     + Headers
 
             Authorization: Bearer jwt_token
@@ -176,22 +269,37 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "error": "User deleted"
-        }
+        + message: User deleted (string)- Confirmation message
+
+    + Body
+
+            {
+            "error": "User deleted"
+            }
 
 + Response 401 (application/json)
+    + Attributes
 
-        {
-        "error": "Incorrect password"
-        }
+        + message: Incorrect password (string)- Error message
+
+    + Body
+
+            {
+            "error": "Incorrect password"
+            }
 
 + Response 401 (application/json)
+    + Attributes
 
-        {
-        "error": "User doesn't exist"
-        }
+        + message: User doesn't exist (string)- Error message
+
+    + Body
+
+            {
+            "error": "User doesn't exist"
+            }
 
 
 ## Workout [/workout]
@@ -356,12 +464,14 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
+    + Body
+
+            {
             "workout_id": 1,
             "total_distance": 61.3,
             "avg_speed": 5.1,
             "max_speed": 10
-        }
+            }
 
 + Response 200 (application/json)
 
@@ -673,6 +783,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Create Friend Request [POST /friends/request/create]
 
 + Request (application/json)
+    + Attributes
+
+        + email: friend@example.com (string) - Friend's email address
+        
     + Headers
 
             Authorization: Bearer jwt_token
@@ -684,29 +798,50 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 201 (application/json)
+    + Attributes
 
-        {
-        "message": "Friend request made"
-        }
+        + message: Friend request made (string) - Confirmation message
+        
+    + Body
+    
+            {
+            "message": "Friend request made"
+            }
 
 + Response 409 (application/json)
+    + Attributes
 
-        {
-        "message": "Request made before or users already friends"
-        }
+        + message: Request made before or users already friends (string) - Error message
+        
+    + Body
+
+            {
+            "message": "Request made before or users already friends"
+            }
 
 + Response 404 (application/json)
+    + Attributes
+
+        + message: User with entered email doesn't exist (string) - Error message
+        
+    + Body
 
         {
         "message": "User with entered email doesn't exist"
         }
 
 + Response 409 (application/json)
+    + Attributes
+
+        + message: User's own email entered (string) - Error message
+
+    + Body
 
         {
         "message": "User's own email entered"
         }
 
+d
 ### Get Friend Request List [GET /friends/request/get]
 
 + Request
@@ -715,23 +850,33 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             Authorization: Bearer jwt_token
 
 + Response 200 (application/json)
+    + Attributes
 
-        [
-            {
-            "user_id": 2,
-            "user_name": "alice",
-            "email": "alice@example.com"
-            },
-            {
-            "user_id": 3,
-            "user_name": "bob",
-            "email": "bob@example.com"
-            }
-        ]
+        + user_id: 2 (number) - User's id
+        + user_name: alice (string) - User's name
+        + email: alice@example.com (string) - User's email
+
+    + Body
+
+            [
+                {
+                "user_id": 2,
+                "user_name": "alice",
+                "email": "alice@example.com"
+                },
+                {
+                "user_id": 3,
+                "user_name": "bob",
+                "email": "bob@example.com"
+                }
+            ]
 
 ### Accept Friend Request [PATCH /friends/request/accept]
-
 + Request (application/json)
+    + Attributes
+
+        + friend_id: 2 (number) - Friend's id
+        
     + Headers
 
             Authorization: Bearer jwt_token
@@ -743,20 +888,32 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 201 (application/json)
+    + Attributes
+        + message: Friend request accepted (string) - Confirmation message
+        
+    + Body
 
-        {
-        "message": "Friend request accepted"
-        }
+            {
+            "message": "Friend request accepted"
+            }
 
 + Response 404 (application/json)
+    + Attributes
+        + message: Friend request doesn't exist (string) - Error message
+        
+    + Body
 
-        {
-        "message": "Friend request doesn't exist"
-        }
+            {
+            "message": "Friend request doesn't exist"
+            }
 
 ### Reject Friend Request [DELETE /friends/request/reject]
 
 + Request (application/json)
+    + Attributes
+
+        + friend_id: 2 (number) - Friend's id
+        
     + Headers
 
             Authorization: Bearer jwt_token
@@ -768,16 +925,24 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 200 (application/json)
+    + Attributes
+        + message: Friend request removed (string) - Confirmation message
+        
+    + Body
 
-        {
-        "message": "Friend request removed"
-        }
+            {
+            "message": "Friend request removed"
+            }
 
 + Response 404 (application/json)
+    + Attributes
+        + message: Friend request doesn't exist (string) - Error message
+        
+    + Body
 
-        {
-        "message": "Friend request doesn't exist"
-        }
+            {
+            "message": "Friend request doesn't exist"
+            }
 
 
 ## Friends [/friends]
@@ -790,23 +955,34 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             Authorization: Bearer jwt_token
 
 + Response 200 (application/json)
+    + Attributes
 
-        [
-            {
-            "user_id": 2,
-            "user_name": "alice",
-            "email": "alice@example.com"
-            },
-            {
-            "user_id": 3,
-            "user_name": "bob",
-            "email": "bob@example.com"
-            }
-        ]
+        + user_id: 2 (number) - User's id
+        + user_name: alice (string) - User's name
+        + email: alice@example.com (string) - User's email
+        
+    + Body
+
+            [
+                {
+                "user_id": 2,
+                "user_name": "alice",
+                "email": "alice@example.com"
+                },
+                {
+                "user_id": 3,
+                "user_name": "bob",
+                "email": "bob@example.com"
+                }
+            ]
 
 ### Remove Friend [DELETE /friends/remove]
 
 + Request (application/json)
+    + Attributes
+
+        + friend_id: 2 (number) - Friends's id
+
     + Headers
 
             Authorization: Bearer jwt_token
@@ -818,20 +994,34 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "message": "Friend removed"
-        }
+        + message: Friend removed (string) - Confirmation message
+        
+    + Body
+
+            {
+            "message": "Friend removed"
+            }
 
 + Response 404 (application/json)
+    + Attributes
 
-        {
-        "message": "Friend doesn't exist"
-        }
+        + message: Friend doesn't exist (string) - Error message
+        
+    + Body
+
+            {
+            "message": "Friend doesn't exist"
+            }
 
 ### Get Friend Profile [GET /friends/getuser]
 
 + Request (application/json)
+    + Attributes
+
+        + friend_id: 2 (number) - Friends's id
+
     + Headers
 
             Authorization: Bearer jwt_token
@@ -843,22 +1033,38 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 + Response 200 (application/json)
+    + Attributes
 
-        {
-        "user_id": 2,
-        "user_name": "alice",
-        "email": "alice@example.com"
-        }
+        + user_id: 2 (number) - User's id
+        + user_name: alice (string) - User's name
+        + email: alice@example.com (string) - User's email
+     
+    + Body
+
+            {
+            "user_id": 2,
+            "user_name": "alice",
+            "email": "alice@example.com"
+            }
 
 + Response 404 (application/json)
+    + Attributes
 
-        {
-        "message": "User not in friends"
-        }
+        + message: User not in friends (string) - Error message
+        
+    + Body
+
+            {
+            "message": "User not in friends"
+            }
 
 ### Get Friend Profile Photo [GET /friends/getphoto]
 
 + Request (application/json)
+    + Attributes
+
+        + friend_id: 2 (number) - Friend's id
+
     + Headers
 
             Authorization: Bearer jwt_token
@@ -874,13 +1080,21 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
         (binary image content)
 
 + Response 404 (application/json)
+    + Attributes
 
-        {
-        "error": "No profile picture provided"
-        }
+        + message: No profile picture provided (string) - Error message
+    + Body
+    
+            {
+            "error": "No profile picture provided"
+            }
 
 + Response 404 (application/json)
+    + Attributes
 
-        {
-        "message": "User not in friends"
-        }
+        + message: User not in friends (string) - Error message
+    + Body
+    
+            {
+            "message": "User not in friends"
+            }
