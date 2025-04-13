@@ -5,49 +5,46 @@ HOST: https://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
-## Questions Collection [/questions]
-
-### List All Questions [GET]
-
-+ Response 200 (application/json)
-
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+## [/workout/createWorkout]
+### Create Workout [POST]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
+            "workout_name": "TEst4",
+            "workout_start": "21-4-2005 10:11"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "message": "Workout created successfully",
+                "workout_id": 1
+            }
+## [/workout/uploadData]
+### Upload WorkoutData [POST]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "samples": [
+                {
+                    "sample_time": "21-4-2024",
+                    "position_lat": 23.46,
+                    "position_lon": 10.1
+                },
+                {
+                    "sample_time": "22-4-2024",
+                    "position_lat": 23.46,
+                    "position_lon": 10.431
+                }
             ]
         }
 
@@ -55,26 +52,184 @@ form of choices.
 
     + Headers
 
-            Location: /questions/2
+            Content-Type: application/json
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
+                "message": "Samples added successfully"
+            }
+
+## [/workout/addParticipant]
+### Add Participant [PUT]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "participant_id": 2
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "message": "Participant added succefully"
+            }
+
+## [/workout/getList]
+### Get Workout List [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "workouts": [
                     {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                        "workout_id": 1,
+                        "workout_name": "TEst1",
+                        "workout_start": "Sun, 21 Apr 2024 00:00:00 GMT"
+                    },
+                    {
+                        "workout_id": 2,
+                        "workout_name": "TEst2",
+                        "workout_start": "Sun, 21 Apr 2024 00:00:00 GMT"
+                    },
+                    {
+                        "workout_id": 3,
+                        "workout_name": "TEst3",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    },
+                    {
+                        "workout_id": 4,
+                        "workout_name": "TEst4",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    },
+                    {
+                        "workout_id": 5,
+                        "workout_name": "TEst5",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    },
+                    {
+                        "workout_id": 6,
+                        "workout_name": "TEst6",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
                     }
                 ]
             }
+
+## [/workout/getData]
+### Get Workout Data [GET]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "from_sampe": 0
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    {
+        "samples": [
+            {
+                "position_lat": 23.46,
+                "position_lon": 10.1,
+                "sample_id": 1,
+                "sample_time": "Sun, 21 Apr 2024 00:00:00 GMT",
+                "user_id": 1,
+                "workout_id": 1
+            },
+            {
+                "position_lat": 23.46,
+                "position_lon": 10.431,
+                "sample_id": 2,
+                "sample_time": "Mon, 22 Apr 2024 00:00:00 GMT",
+                "user_id": 1,
+                "workout_id": 1
+            }
+        ]
+    }
+
+## [/workout/deleteWorkout]
+### Delete Workout [DELETE]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    {
+        {
+            "message": "Workout deleted successfully"
+        }
+    }
+
+## [/workout/shareWorkout]
+### Share Workout [PUT]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "shared_user_id": 2
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    {
+        {
+            "message": "Workout shared successfully"
+        }
+    }
+
+## [/workout/unshareWorkout]
+### Unshare Workout [DELETE]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "shared_user_id": 2
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    {
+        {
+            "message": "Workout unshared successfully"
+        }
+    }
