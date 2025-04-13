@@ -198,6 +198,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Create Workout [POST/workout/createWorkout]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_name": "TEst4",
@@ -224,6 +227,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Upload WorkoutData [POST /workout/uploadData]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_id": 1,
@@ -268,6 +274,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Add Participant [PUT /workout/addParticipant]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_id": 1,
@@ -325,6 +334,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Get Workout List [GET /workout/getList]
 
 + Response 200 (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
     + Body
 
@@ -366,6 +378,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Get Workout Data [GET /workout/getData]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_id": 1,
@@ -416,6 +431,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Delete Workout [DELETE /workout/deleteWorkout]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_id": 1
@@ -450,6 +468,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Share Workout [PUT /workout/shareWorkout]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_id": 1,
@@ -493,6 +514,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Unshare Workout [DELETE /workout/unshareWorkout]
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
 
         {
             "workout_id": 1,
