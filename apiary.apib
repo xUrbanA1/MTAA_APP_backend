@@ -196,7 +196,8 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
 ## Workout [/workout]
 ### Create Workout [POST/workout/createWorkout]
-
++ workout_name (string) - Názov nového workoutu
++ workout_start (Datetime) - Dátum a čas kedy workout začal vo formáte dd-mm-yyyy HH:MM:SS
 + Request (application/json)
     + Headers
 
@@ -227,7 +228,11 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Upload WorkoutData [POST /workout/uploadData]
-
++ workout_id (int) - Id workoutu ktorému patria nové záznamy
++ samples (array) - zoznam nových záznamov
++ sample_time (Datetime) - Dátum a čas namerania záznamu vo formáte dd-mm-yyyy HH:MM:SS
++ position_lat (float) - Zemepisná šírka záznamu
++ position_lon (float) - Zemepisná dĺžka záznamu
 + Request (application/json)
     + Headers
 
@@ -276,7 +281,8 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Add Participant [PUT /workout/addParticipant]
-
++ workout_id (int) - Id workoutu ku ktorému sa pridáva nový účastník
++ participant_id (int) - Id nového účastníka
 + Request (application/json)
     + Headers
 
@@ -338,7 +344,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Upadate Participant Data [PUT /workout/updateParticipantData]
-
++ workout_id (int): Id workoutu ktorému sa nastavujú údaje
++ total_distance (float): Celková vzdialenosť, ktorú účastník prešiel
++ avg_speed (float): Priemerná rýchlosť, ktorou účastník išiel
++ max_speed (float): Najvyššia rýchlosť, ktorou účastník išiel
 + Request (application/json)
     + Headers
 
@@ -444,7 +453,8 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Get Workout Data [GET /workout/getData]
-
++ workout_id (int): Id workoutu z ktorého si pýtame záznamy
++ from_sampe (int): Id od ktorého sa posielajú záznamy
 + Request (application/json)
     + Headers
 
@@ -499,7 +509,7 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Delete Workout [DELETE /workout/deleteWorkout]
-
++ workout_id (int): Id workoutu, ktorý chceme zmazať
 + Request (application/json)
     + Headers
 
@@ -538,7 +548,8 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Share Workout [PUT /workout/shareWorkout]
-
++ workout_id (int): Id workout, ktorý bude zdielaný
++ shared_user_id (int): Id používateľa, s ktorým chceme zdieľať workout
 + Request (application/json)
     + Headers
 
@@ -586,7 +597,8 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Unshare Workout [DELETE /workout/unshareWorkout]
-
++ workout_id (int): Id workout, ktorý chceme prestať zdieľať
++ shared_user_id (int): Id používateľa, s ktorým chceme prestať zdieľať workout
 + Request (application/json)
     + Headers
 
