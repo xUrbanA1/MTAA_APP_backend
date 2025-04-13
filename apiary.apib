@@ -5,21 +5,17 @@ HOST: https://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
-## [/workout/createWorkout]
+## Create Workout [/workout/createWorkout]
 ### Create Workout [POST]
 
 + Request (application/json)
 
         {
             "workout_name": "TEst4",
-            "workout_start": "21-4-2005 10:11"
+            "workout_start": "21-4-2005 10:11:12"
         }
 
 + Response 201 (application/json)
-
-    + Headers
-
-            Content-Type: application/json
 
     + Body
 
@@ -27,7 +23,8 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 "message": "Workout created successfully",
                 "workout_id": 1
             }
-## [/workout/uploadData]
+
+## Upload WorkoutData [/workout/uploadData]
 ### Upload WorkoutData [POST]
 
 + Request (application/json)
@@ -36,12 +33,12 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             "workout_id": 1,
             "samples": [
                 {
-                    "sample_time": "21-4-2024",
+                    "sample_time": "21-4-2024 12:22:44",
                     "position_lat": 23.46,
                     "position_lon": 10.1
                 },
                 {
-                    "sample_time": "22-4-2024",
+                    "sample_time": "22-4-2024 12:22:45",
                     "position_lat": 23.46,
                     "position_lon": 10.431
                 }
@@ -50,17 +47,13 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Content-Type: application/json
-
     + Body
 
             {
                 "message": "Samples added successfully"
             }
 
-## [/workout/addParticipant]
+## Add Participant [/workout/addParticipant]
 ### Add Participant [PUT]
 
 + Request (application/json)
@@ -72,24 +65,16 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Content-Type: application/json
-
     + Body
 
             {
                 "message": "Participant added succefully"
             }
 
-## [/workout/getList]
+## Get Workout List [/workout/getList]
 ### Get Workout List [GET]
 
 + Response 200 (application/json)
-
-    + Headers
-
-            Content-Type: application/json
 
     + Body
 
@@ -128,7 +113,7 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 ]
             }
 
-## [/workout/getData]
+## Get Workout Data [/workout/getData]
 ### Get Workout Data [GET]
 
 + Request (application/json)
@@ -140,33 +125,30 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 + Response 200 (application/json)
 
-    + Headers
-
-            Content-Type: application/json
-
     + Body
-    {
-        "samples": [
+    
             {
-                "position_lat": 23.46,
-                "position_lon": 10.1,
-                "sample_id": 1,
-                "sample_time": "Sun, 21 Apr 2024 00:00:00 GMT",
-                "user_id": 1,
-                "workout_id": 1
-            },
-            {
-                "position_lat": 23.46,
-                "position_lon": 10.431,
-                "sample_id": 2,
-                "sample_time": "Mon, 22 Apr 2024 00:00:00 GMT",
-                "user_id": 1,
-                "workout_id": 1
+                "samples": [
+                    {
+                        "position_lat": 23.46,
+                        "position_lon": 10.1,
+                        "sample_id": 1,
+                        "sample_time": "Sun, 21 Apr 2024 00:00:00 GMT",
+                        "user_id": 1,
+                        "workout_id": 1
+                    },
+                    {
+                        "position_lat": 23.46,
+                        "position_lon": 10.431,
+                        "sample_id": 2,
+                        "sample_time": "Mon, 22 Apr 2024 00:00:00 GMT",
+                        "user_id": 1,
+                        "workout_id": 1
+                    }
+                ]
             }
-        ]
-    }
 
-## [/workout/deleteWorkout]
+## Delete Workout [/workout/deleteWorkout]
 ### Delete Workout [DELETE]
 
 + Request (application/json)
@@ -177,18 +159,15 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 + Response 200 (application/json)
 
-    + Headers
-
-            Content-Type: application/json
-
     + Body
-    {
-        {
-            "message": "Workout deleted successfully"
-        }
-    }
 
-## [/workout/shareWorkout]
+            {
+                {
+                    "message": "Workout deleted successfully"
+                }
+            }
+
+## Share Workout [/workout/shareWorkout]
 ### Share Workout [PUT]
 
 + Request (application/json)
@@ -200,18 +179,15 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         
 + Response 200 (application/json)
 
-    + Headers
-
-            Content-Type: application/json
-
     + Body
-    {
-        {
-            "message": "Workout shared successfully"
-        }
-    }
+    
+            {
+                {
+                    "message": "Workout shared successfully"
+                }
+            }
 
-## [/workout/unshareWorkout]
+## Unshare Workout [/workout/unshareWorkout]
 ### Unshare Workout [DELETE]
 
 + Request (application/json)
@@ -223,13 +199,10 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         
 + Response 200 (application/json)
 
-    + Headers
-
-            Content-Type: application/json
-
     + Body
-    {
-        {
-            "message": "Workout unshared successfully"
-        }
-    }
+    
+            {
+                {
+                    "message": "Workout unshared successfully"
+                }
+            }
