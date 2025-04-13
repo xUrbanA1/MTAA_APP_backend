@@ -22,7 +22,7 @@ def make_friend_request():
     user = User.query.filter_by(user_id=current_user).first()
     friend_email = request.json.get("email")
     if user.email == friend_email:
-        return jsonify({"msg": "User's own email entered"}), 409
+        return jsonify({"message": "User's own email entered"}), 409
 
     friend = User.query.filter_by(email=friend_email).first()
 
@@ -33,13 +33,13 @@ def make_friend_request():
             db.session.add(friend_row)
             try:
                 db.session.commit()
-                return jsonify({"msg": "Friend request made"}), 201
+                return jsonify({"message": "Friend request made"}), 201
             except IntegrityError:
-                return jsonify({"msg": "Request made before or users already friends"}), 409
+                return jsonify({"message": "Request made before or users already friends"}), 409
         else:
-            return jsonify({"msg": "Request made before or users already friends"}), 409
+            return jsonify({"message": "Request made before or users already friends"}), 409
     else:
-        return jsonify({"msg": "User with entered email doesn't exist"}), 404
+        return jsonify({"message": "User with entered email doesn't exist"}), 404
 
 
 @friends.get('/friends/request/get')
@@ -61,9 +61,9 @@ def accept_friend_request():
     if friend_request:
         friend_request.accepted = True
         db.session.commit()
-        return jsonify({"msg": "Friend request accepted"}), 201
+        return jsonify({"message": "Friend request accepted"}), 201
     else:
-        return jsonify({"msg": "Friend request doesn't exist"}), 404
+        return jsonify({"message": "Friend request doesn't exist"}), 404
 
 
 @friends.delete('/friends/request/reject')
@@ -76,9 +76,9 @@ def reject_friend_request():
     if friend_request:
         db.session.delete(friend_request)
         db.session.commit()
-        return jsonify({"msg": "Friend request removed"}), 200
+        return jsonify({"message": "Friend request removed"}), 200
     else:
-        return jsonify({"msg": "Friend request doesn't exist"}), 404
+        return jsonify({"message": "Friend request doesn't exist"}), 404
 
 
 @friends.get('/friends/get')
@@ -109,9 +109,9 @@ def remove_friend():
     if friend:
         db.session.delete(friend)
         db.session.commit()
-        return jsonify({"msg": "Friend removed"}), 200
+        return jsonify({"message": "Friend removed"}), 200
     else:
-        return jsonify({"msg": "Friend doesn't exist"}), 404
+        return jsonify({"message": "Friend doesn't exist"}), 404
 
 
 @friends.get("/friends/getuser")
@@ -124,7 +124,7 @@ def get_user():
         user = User.query.filter_by(user_id=friend_id).first()
         return jsonify({"user_id": user.user_id, "user_name": user.user_name, "email": user.email})
     else:
-        return jsonify({"msg": "User not in friends"}), 404
+        return jsonify({"message": "User not in friends"}), 404
 
 
 @friends.get("/friends/getphoto")
@@ -145,4 +145,4 @@ def get_photo():
             download_name="image.jpg",
             mimetype="image/jpg")
     else:
-        return jsonify({"msg": "User not in friends"}), 404
+        return jsonify({"message": "User not in friends"}), 404

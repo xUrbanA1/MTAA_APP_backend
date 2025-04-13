@@ -23,11 +23,4 @@ jwt = JWTManager(app)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
-
-
-@app.get("/dbtest")
-@jwt_required()
-def dbtest():
-    users = User.query.all()
-    return jsonify([{'user_id': user.user_id, 'user_name': user.user_name, 'email': user.email} for user in users])
+    return """<meta http-equiv="refresh" content="0; url=https://mtaaappbackend.docs.apiary.io/">"""
