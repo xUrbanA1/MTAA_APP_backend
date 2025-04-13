@@ -53,8 +53,8 @@ class Workout(db.Model):
 # Define the 'workouts_participants' table
 class WorkoutParticipant(db.Model):
     __tablename__ = 'workout_participants'
-    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id', ondelete='CASCADE'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
     total_distance = db.Column(db.Float)
     avg_speed = db.Column(db.Float)
     max_speed = db.Column(db.Float)
@@ -75,8 +75,8 @@ class WorkoutParticipant(db.Model):
 class WorkoutDataSample(db.Model):
     __tablename__ = 'workout_data_sample'
     sample_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
     sample_time = db.Column(db.DateTime)
     position_lat = db.Column(db.Float)
     position_lon = db.Column(db.Float)

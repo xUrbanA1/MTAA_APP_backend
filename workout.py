@@ -98,14 +98,52 @@ def addParticipant():
     db.session.commit()
     return jsonify({'message': "Participant added succefully"}), 201
 
+@workout.put("/workout/updateParticipantData")
+@jwt_required()
+def updateParticipantData():
+    data = request.get_json()
+    current_user = int(get_jwt_identity())
 
+    workout_id = data.get('workout_id')
+    total_distance = data.get('total_distance')
+    avg_speed = data.get('avg_speed')
+    max_speed = data.get('max_speed')
+
+    if(type(workout_id) != int or type(current_user) != int or (type(total_distance) != int and type(total_distance) != float and total_distance != None) or (type(avg_speed) != int and type(avg_speed) != float and total_distance != None) or (type(max_speed) != int and type(max_speed) != float and total_distance != None)):
+        return jsonify({'message': "Wrong data type"}), 400
+    
+    if (Workout.query.filter_by(workout_id=workout_id).count() == 0 or WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
+        return jsonify({'message': "Workout doesn't exist"}), 404
+    
+    workoutParticipant = WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).first()
+    if (total_distance != None):
+        workoutParticipant.total_distance = total_distance
+    if (avg_speed != None):
+        workoutParticipant.avg_speed = avg_speed
+    if (max_speed != None):
+        workoutParticipant.max_speed = max_speed
+        
+    db.session.commit()
+    return jsonify({'message': "Participant updated succefully"}), 200
+    
 @workout.get("/workout/getList")
 @jwt_required()
 def getWorkoutList():
     current_user = int(get_jwt_identity())
 
-    workoutsList = Workout.query.join(Workout.participants).filter_by(user_id=current_user).all()
-    return jsonify(workouts=[e.serialize() for e in workoutsList]), 200
+    workoutsList = db.session.query(Workout,WorkoutParticipant).join(WorkoutParticipant).filter(WorkoutParticipant.user_id==current_user).all()
+    return jsonify(workouts=[WorkoutsListSerialize(e) for e in workoutsList]), 200
+
+def WorkoutsListSerialize(self):
+    return {
+            'workout_id': self[0].workout_id, 
+            'workout_name': self[0].workout_name,
+            'workout_start': self[0].workout_start,
+            'user_id': self[1].user_id,
+            'total_distance': self[1].total_distance,
+            'avg_speed': self[1].avg_speed,
+            'max_speed': self[1].max_speed,
+    }
 
 
 @workout.get("/workout/getData")

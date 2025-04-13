@@ -331,6 +331,44 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 "message": "Participant already exist"
             }
 
+### Add Participant [PUT /workout/updateParticipantData]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+        {
+            "workout_id": 1,
+            "total_distance": 61.3,
+            "avg_speed": 5.1,
+            "max_speed": 10
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Participant updated succefully"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
 ### Get Workout List [GET /workout/getList]
 
 + Response 200 (application/json)
@@ -343,31 +381,55 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             {
                 "workouts": [
                     {
+                        "avg_speed": null,
+                        "max_speed": null,
+                        "total_distance": null,
+                        "user_id": 1,
                         "workout_id": 1,
                         "workout_name": "TEst1",
                         "workout_start": "Sun, 21 Apr 2024 00:00:00 GMT"
                     },
                     {
+                        "avg_speed": null,
+                        "max_speed": null,
+                        "total_distance": null,
+                        "user_id": 1,
                         "workout_id": 2,
                         "workout_name": "TEst2",
                         "workout_start": "Sun, 21 Apr 2024 00:00:00 GMT"
                     },
                     {
+                        "avg_speed": null,
+                        "max_speed": null,
+                        "total_distance": null,
+                        "user_id": 1,
                         "workout_id": 3,
                         "workout_name": "TEst3",
                         "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
                     },
                     {
+                        "avg_speed": null,
+                        "max_speed": null,
+                        "total_distance": null,
+                        "user_id": 1,
                         "workout_id": 4,
                         "workout_name": "TEst4",
                         "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
                     },
                     {
+                        "avg_speed": null,
+                        "max_speed": null,
+                        "total_distance": null,
+                        "user_id": 1,
                         "workout_id": 5,
                         "workout_name": "TEst5",
                         "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
                     },
                     {
+                        "avg_speed": null,
+                        "max_speed": null,
+                        "total_distance": null,
+                        "user_id": 1,
                         "workout_id": 6,
                         "workout_name": "TEst6",
                         "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"

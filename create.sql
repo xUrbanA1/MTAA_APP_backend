@@ -28,7 +28,7 @@ CREATE TABLE workout_participants(
 	avg_speed FLOAT,
 	max_speed FLOAT,
 	PRIMARY KEY (workout_id, user_id),
-	FOREIGN KEY (user_id) REFERENCES users(user_id)ON DELETE CASCADE,
+	FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
 	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id) ON DELETE CASCADE
 );
 
@@ -45,10 +45,10 @@ CREATE TABLE workout_data_sample(
 );
 
 CREATE TABLE workout_data_shared(
-	workout_id SERIAL PRIMARY KEY,
-	user_id SERIAL,
-	shared_with SERIAL,
-	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id),
+	workout_id INTEGER PRIMARY KEY,
+	user_id INTEGER,
+	shared_with INTEGER,
+	FOREIGN KEY (workout_id) REFERENCES workouts(workout_id) ON DELETE CASCADE,
 	FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
 	FOREIGN KEY (shared_with) REFERENCES users(user_id) ON DELETE CASCADE
 )
