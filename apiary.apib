@@ -1,0 +1,397 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# MTAA_APP_backend
+
+Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
+            
+## Authentification [/auth]   
+### Create User [POST /auth/register]
+
++ Request (application/json)
+
+        {
+        "username": "John Doe",
+        "email": "john@example.com",
+        "password": "securepassword123"
+        }
+
++ Response 201 (application/json)
+
+        {
+        "message": "User added successfully"
+        }
+
++ Response 409 (application/json)
+
+        {
+        "message": "Email already exists"
+        }
+        
++ Response 400 (application/json)        
+        
+        {
+        "message": "Some information missing"
+        } 
+
+### Login [POST /auth/login]
+
++ Request (application/json)
+
+        {
+        "email": "john@example.com",
+        "password": "securepassword123"
+        }
+
++ Response 200 (application/json)
+
+        {
+        "token": "jwt_token",
+        "user_id": 1
+        }
+
++ Response 401 (application/json)
+
+        {
+        "msg": "Bad email or password"
+        }
+
+### Get Current User [GET /auth/getuser]
++ Request
+    + Headers
+    
+            Authorization: Bearer jwt_token
+
++ Response 200 (application/json)
+
+        {
+        "user_id": 1,
+        "user_name": "John Doe",
+        "email": "john@example.com"
+        }
+
+
+## User management [/user]
+### Change Username [PATCH /user/change/username]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body 
+
+            {
+            "username": "new_username"
+            }
+
++ Response 200 (application/json)
+
+        {
+        "message": "Username changed"
+        }
+
++ Response 400 (application/json)
+
+        {
+        "message": "No username entered"
+        }
+
+### Change Password [PATCH /user/change/password]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+    
+    + Body
+    
+            {
+            "password": "new_password"
+            }
+
++ Response 200 (application/json)
+
+        {
+        "message": "Password changed"
+        }
+
++ Response 400 (application/json)
+
+        {
+        "message": "No password entered"
+        }
+
+### Upload Profile Photo [PATCH /user/change/photo]
+
++ Request (image/jpg)
+    + Headers
+    
+            Authorization: Bearer jwt_token
+    
+    + Body
+    
+            (binary image data)
+
++ Response 201 (application/json)
+
+        {
+        "msg": "File uploaded successfully!"
+        }
+
++ Response 400 (application/json)
+
+        {
+        "error": "No file provided"
+        }
+
+### Get Profile Photo [GET /user/get/photo]
+
++ Request
+    + Headers
+
+            Authorization: Bearer jwt_token
+
++ Response 200 (image/jpg)
+
+        (binary image content)
+
++ Response 404 (application/json)
+
+        {
+        "error": "No profile picture provided"
+        }
+
+### Delete User Account [DELETE /user/change/delete]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+
+            {
+            "password": "securepassword123"
+            }
+
++ Response 200 (application/json)
+
+        {
+        "error": "User deleted"
+        }
+
++ Response 401 (application/json)
+
+        {
+        "error": "Incorrect password"
+        }
+
++ Response 401 (application/json)
+
+        {
+        "error": "User doesn't exist"
+        }        
+
+
+## Create Workout [/workout/createWorkout]
+### Create Workout [POST]
+
++ Request (application/json)
+
+        {
+            "workout_name": "TEst4",
+            "workout_start": "21-4-2005 10:11:12"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout created successfully",
+                "workout_id": 1
+            }
+
+## Upload WorkoutData [/workout/uploadData]
+### Upload WorkoutData [POST]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "samples": [
+                {
+                    "sample_time": "21-4-2024 12:22:44",
+                    "position_lat": 23.46,
+                    "position_lon": 10.1
+                },
+                {
+                    "sample_time": "22-4-2024 12:22:45",
+                    "position_lat": 23.46,
+                    "position_lon": 10.431
+                }
+            ]
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message": "Samples added successfully"
+            }
+
+## Add Participant [/workout/addParticipant]
+### Add Participant [PUT]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "participant_id": 2
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message": "Participant added succefully"
+            }
+
+## Get Workout List [/workout/getList]
+### Get Workout List [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "workouts": [
+                    {
+                        "workout_id": 1,
+                        "workout_name": "TEst1",
+                        "workout_start": "Sun, 21 Apr 2024 00:00:00 GMT"
+                    },
+                    {
+                        "workout_id": 2,
+                        "workout_name": "TEst2",
+                        "workout_start": "Sun, 21 Apr 2024 00:00:00 GMT"
+                    },
+                    {
+                        "workout_id": 3,
+                        "workout_name": "TEst3",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    },
+                    {
+                        "workout_id": 4,
+                        "workout_name": "TEst4",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    },
+                    {
+                        "workout_id": 5,
+                        "workout_name": "TEst5",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    },
+                    {
+                        "workout_id": 6,
+                        "workout_name": "TEst6",
+                        "workout_start": "Thu, 21 Apr 2005 10:11:12 GMT"
+                    }
+                ]
+            }
+
+## Get Workout Data [/workout/getData]
+### Get Workout Data [GET]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "from_sampe": 0
+        }
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "samples": [
+                    {
+                        "position_lat": 23.46,
+                        "position_lon": 10.1,
+                        "sample_id": 1,
+                        "sample_time": "Sun, 21 Apr 2024 00:00:00 GMT",
+                        "user_id": 1,
+                        "workout_id": 1
+                    },
+                    {
+                        "position_lat": 23.46,
+                        "position_lon": 10.431,
+                        "sample_id": 2,
+                        "sample_time": "Mon, 22 Apr 2024 00:00:00 GMT",
+                        "user_id": 1,
+                        "workout_id": 1
+                    }
+                ]
+            }
+
+## Delete Workout [/workout/deleteWorkout]
+### Delete Workout [DELETE]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                {
+                    "message": "Workout deleted successfully"
+                }
+            }
+
+## Share Workout [/workout/shareWorkout]
+### Share Workout [PUT]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "shared_user_id": 2
+        }
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                {
+                    "message": "Workout shared successfully"
+                }
+            }
+
+## Unshare Workout [/workout/unshareWorkout]
+### Unshare Workout [DELETE]
+
++ Request (application/json)
+
+        {
+            "workout_id": 1,
+            "shared_user_id": 2
+        }
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                {
+                    "message": "Workout unshared successfully"
+                }
+            }

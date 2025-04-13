@@ -69,7 +69,7 @@ def createWorkout():
     new_participant = WorkoutParticipant(workout_id=new_workout.workout_id, user_id=current_user)
     db.session.add(new_participant)
     db.session.commit()
-    return jsonify({'message': 'Workout created successfully'}), 201
+    return jsonify({'message': 'Workout created successfully', "workout_id": new_workout.workout_id}), 201
 
 @workout.put("/workout/addParticipant")
 @jwt_required()
@@ -90,12 +90,16 @@ def addParticipant():
     if(Friend.query.filter_by(user_id=current_user, friend_id=participant_id, accepted=True).count()==0):
         return jsonify({'message': "New participant is not a friend"}), 403
     
-    if (Workout.query.filter_by(workout_id=workout_id).count() or WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() != 0):
-        new_participant = WorkoutParticipant(workout_id=workout_id, user_id=participant_id)
-        db.session.add(new_participant)
-        db.session.commit()
-        return
-    return
+    if (Workout.query.filter_by(workout_id=workout_id).count() == 0 or WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
+        return jsonify({'message': "Workout doesn't exist"}), 404
+
+    if (WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=participant_id).count() != 0):
+        return jsonify({'message': "Participant already exist"}), 403
+    
+    new_participant = WorkoutParticipant(workout_id=workout_id, user_id=participant_id)
+    db.session.add(new_participant)
+    db.session.commit()
+    return jsonify({'message': "Participant added succefully"}), 201
 
 
 @workout.get("/workout/getList")
@@ -127,7 +131,7 @@ def getWorkoutData():
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0 and  WorkoutDataShared.query.filter_by(workout_id=workout_id, shared_with=current_user).count() != 0):
         return jsonify({'message': "Unauthorized access"}), 403
     
-    sampleList = WorkoutDataSample.query.filter_by(WorkoutDataSample.sample_id >= from_sample, workout_id=workout_id).all()
+    sampleList = WorkoutDataSample.query.filter(WorkoutDataSample.sample_id >= from_sample, WorkoutDataSample.workout_id==workout_id).all()
     return jsonify(samples=[e.serialize() for e in sampleList]), 200
 
 @workout.delete("/workout/deleteWorkout")
