@@ -3,7 +3,196 @@ HOST: https://polls.apiblueprint.org/
 
 # MTAA_APP_backend
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
+            
+## Authentification [/auth]   
+### Create User [POST /auth/register]
+
++ Request (application/json)
+
+        {
+        "username": "John Doe",
+        "email": "john@example.com",
+        "password": "securepassword123"
+        }
+
++ Response 201 (application/json)
+
+        {
+        "message": "User added successfully"
+        }
+
++ Response 409 (application/json)
+
+        {
+        "message": "Email already exists"
+        }
+        
++ Response 400 (application/json)        
+        
+        {
+        "message": "Some information missing"
+        } 
+
+### Login [POST /auth/login]
+
++ Request (application/json)
+
+        {
+        "email": "john@example.com",
+        "password": "securepassword123"
+        }
+
++ Response 200 (application/json)
+
+        {
+        "token": "jwt_token",
+        "user_id": 1
+        }
+
++ Response 401 (application/json)
+
+        {
+        "msg": "Bad email or password"
+        }
+
+### Get Current User [GET /auth/getuser]
++ Request
+    + Headers
+    
+            Authorization: Bearer jwt_token
+
++ Response 200 (application/json)
+
+        {
+        "user_id": 1,
+        "user_name": "John Doe",
+        "email": "john@example.com"
+        }
+
+
+## User management [/user]
+### Change Username [PATCH /user/change/username]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body 
+
+            {
+            "username": "new_username"
+            }
+
++ Response 200 (application/json)
+
+        {
+        "message": "Username changed"
+        }
+
++ Response 400 (application/json)
+
+        {
+        "message": "No username entered"
+        }
+
+### Change Password [PATCH /user/change/password]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+    
+    + Body
+    
+            {
+            "password": "new_password"
+            }
+
++ Response 200 (application/json)
+
+        {
+        "message": "Password changed"
+        }
+
++ Response 400 (application/json)
+
+        {
+        "message": "No password entered"
+        }
+
+### Upload Profile Photo [PATCH /user/change/photo]
+
++ Request (image/jpg)
+    + Headers
+    
+            Authorization: Bearer jwt_token
+    
+    + Body
+    
+            (binary image data)
+
++ Response 201 (application/json)
+
+        {
+        "msg": "File uploaded successfully!"
+        }
+
++ Response 400 (application/json)
+
+        {
+        "error": "No file provided"
+        }
+
+### Get Profile Photo [GET /user/get/photo]
+
++ Request
+    + Headers
+
+            Authorization: Bearer jwt_token
+
++ Response 200 (image/jpg)
+
+        (binary image content)
+
++ Response 404 (application/json)
+
+        {
+        "error": "No profile picture provided"
+        }
+
+### Delete User Account [DELETE /user/change/delete]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+
+            {
+            "password": "securepassword123"
+            }
+
++ Response 200 (application/json)
+
+        {
+        "error": "User deleted"
+        }
+
++ Response 401 (application/json)
+
+        {
+        "error": "Incorrect password"
+        }
+
++ Response 401 (application/json)
+
+        {
+        "error": "User doesn't exist"
+        }        
+
 
 ## Create Workout [/workout/createWorkout]
 ### Create Workout [POST]
