@@ -18,11 +18,8 @@ def uploadData():
     if(type(workout_id) != int):
         return jsonify({'message': "Wrong data type"}), 400
 
-    if (Workout.query.filter_by(workout_id=workout_id).count() == 0):
+    if (Workout.query.filter_by(workout_id=workout_id).count() == 0 or WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
         return jsonify({'message': "Workout doesn't exist"}), 400
-        
-    if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
-        return jsonify({'message': "Unauthorized access"}), 403
     
     for sample in data['samples']:
         sample_time = sample['sample_time']
@@ -129,7 +126,7 @@ def getWorkoutData():
         return jsonify({'message': "Workout doesn't exist"}), 400
         
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0 and  WorkoutDataShared.query.filter_by(workout_id=workout_id, shared_with=current_user).count() != 0):
-        return jsonify({'message': "Unauthorized access"}), 403
+        return jsonify({'message': "Workout doesn't exist"}), 400
     
     sampleList = WorkoutDataSample.query.filter(WorkoutDataSample.sample_id >= from_sample, WorkoutDataSample.workout_id==workout_id).all()
     return jsonify(samples=[e.serialize() for e in sampleList]), 200
@@ -161,6 +158,10 @@ def shareWorkoutPut():
     workout_id = data.get('workout_id')
     shared_user_id = data.get('shared_user_id')
     current_user = int(get_jwt_identity())
+
+    if(type(workout_id) != int or type(shared_user_id) != int):
+        return jsonify({'message': "Wrong data type"}), 400
+    
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
         return jsonify({'message': "Workout doesn't exist"}), 400
 
@@ -181,6 +182,9 @@ def shareWorkoutDelete():
     workout_id = data.get('workout_id')
     shared_user_id = data.get('shared_user_id')
     current_user = int(get_jwt_identity())
+    
+    if(type(workout_id) != int or type(shared_user_id) != int):
+        return jsonify({'message': "Wrong data type"}), 400
     
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
         return jsonify({'message': "Workout doesn't exist"}), 400
