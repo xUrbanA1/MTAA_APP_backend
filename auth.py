@@ -3,6 +3,7 @@ from flask import request, jsonify, Blueprint, send_file
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from database import *
+from sqlalchemy.exc import IntegrityError
 auth = Blueprint('auth', __name__)
 bcrypt = Bcrypt()
 
@@ -21,12 +22,17 @@ def createUser():
     user_name = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    if not (user_name and email and password):
+        return jsonify({'message': 'Some information missing'}), 400
     password_hashed = bcrypt.generate_password_hash(password).decode("utf-8")
 
     new_user = User(user_name=user_name, email=email,
                     password_hashed=password_hashed)
     db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify({"message": "Email already exists"}), 409
 
     return jsonify({'message': 'User added successfully'}), 201
 
@@ -41,7 +47,7 @@ def verifyLogin():
         access_token = create_access_token(identity=str(user.user_id))
         return jsonify({"token": access_token, "user_id": user.user_id})
     else:
-        return jsonify({"msg": "Bad email or password"}), 401
+        return jsonify({"message": "Bad email or password"}), 401
 
 
 @auth.get("/auth/getuser")
@@ -58,9 +64,11 @@ def update_user():
     current_user = int(get_jwt_identity())
     user = User.query.filter_by(user_id=current_user).first()
     new_username = request.json.get("username")
+    if not new_username:
+        return jsonify({'message': 'No username entered'}), 400
     user.user_name = new_username
     db.session.commit()
-    return jsonify({"msg": "Username changed"}), 200
+    return jsonify({"message": "Username changed"}), 200
 
 
 @auth.patch('/user/change/password')
@@ -69,11 +77,13 @@ def update_password():
     current_user = int(get_jwt_identity())
     user = User.query.filter_by(user_id=current_user).first()
     new_password = request.json.get("password")
+    if not new_password:
+        return jsonify({'message': 'No password entered'}), 400
     password_hashed = bcrypt.generate_password_hash(
         new_password).decode("utf-8")
     user.password_hashed = password_hashed
     db.session.commit()
-    return jsonify({"msg": "Password changed"}), 200
+    return jsonify({"message": "Password changed"}), 200
 
 
 @auth.patch('/user/change/photo')
@@ -89,7 +99,7 @@ def update_photo():
     user.user_photo = file
     db.session.commit()
 
-    return jsonify({"msg": f"File uploaded successfully!"}), 201
+    return jsonify({"message": f"File uploaded successfully!"}), 201
 
 
 @auth.get('/user/get/photo')
