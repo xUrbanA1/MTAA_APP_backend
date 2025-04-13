@@ -194,8 +194,8 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
         }        
 
 
-## Create Workout [/workout/createWorkout]
-### Create Workout [POST]
+## Workout [/workout]
+### Create Workout [POST/workout/createWorkout]
 
 + Request (application/json)
 
@@ -213,8 +213,15 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 "workout_id": 1
             }
 
-## Upload WorkoutData [/workout/uploadData]
-### Upload WorkoutData [POST]
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
+### Upload WorkoutData [POST /workout/uploadData]
 
 + Request (application/json)
 
@@ -242,8 +249,23 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 "message": "Samples added successfully"
             }
 
-## Add Participant [/workout/addParticipant]
-### Add Participant [PUT]
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
+### Add Participant [PUT /workout/addParticipant]
 
 + Request (application/json)
 
@@ -260,8 +282,47 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 "message": "Participant added succefully"
             }
 
-## Get Workout List [/workout/getList]
-### Get Workout List [GET]
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "User doesn't exist"
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "New participant is not a friend"
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "Participant already exist"
+            }
+
+### Get Workout List [GET /workout/getList]
 
 + Response 200 (application/json)
 
@@ -302,8 +363,7 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 ]
             }
 
-## Get Workout Data [/workout/getData]
-### Get Workout Data [GET]
+### Get Workout Data [GET /workout/getData]
 
 + Request (application/json)
 
@@ -337,8 +397,23 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 ]
             }
 
-## Delete Workout [/workout/deleteWorkout]
-### Delete Workout [DELETE]
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
+### Delete Workout [DELETE /workout/deleteWorkout]
 
 + Request (application/json)
 
@@ -356,8 +431,23 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 }
             }
 
-## Share Workout [/workout/shareWorkout]
-### Share Workout [PUT]
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
+### Share Workout [PUT /workout/shareWorkout]
 
 + Request (application/json)
 
@@ -376,8 +466,31 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 }
             }
 
-## Unshare Workout [/workout/unshareWorkout]
-### Unshare Workout [DELETE]
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout is alredy shared"
+            }
+
+### Unshare Workout [DELETE /workout/unshareWorkout]
 
 + Request (application/json)
 
@@ -394,4 +507,28 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
                 {
                     "message": "Workout unshared successfully"
                 }
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Wrong data type"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout doesn't exist"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Workout isn't shared"
             }
