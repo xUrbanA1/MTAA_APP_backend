@@ -196,9 +196,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
 ## Workout [/workout]
 ### Create Workout [POST/workout/createWorkout]
-+ workout_name (string) - Názov nového workoutu
-+ workout_start (Datetime) - Dátum a čas kedy workout začal vo formáte dd-mm-yyyy HH:MM:SS
 + Request (application/json)
+    + Attributes
+        + workout_name: (string) - Názov nového workoutu
+        + workout_start: (string) - Dátum a čas kedy workout začal vo formáte dd-mm-yyyy HH:MM:SS
     + Headers
 
             Authorization: Bearer jwt_token
@@ -228,12 +229,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Upload WorkoutData [POST /workout/uploadData]
-+ workout_id (int) - Id workoutu ktorému patria nové záznamy
-+ samples (array) - zoznam nových záznamov
-+ sample_time (Datetime) - Dátum a čas namerania záznamu vo formáte dd-mm-yyyy HH:MM:SS
-+ position_lat (float) - Zemepisná šírka záznamu
-+ position_lon (float) - Zemepisná dĺžka záznamu
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workoutu ktorému patria nové záznamy
+        + sample_time: (string) - Dátum a čas namerania záznamu vo formáte dd-mm-yyyy HH:MM:SS
+        + position_lat: (number) - Zemepisná šírka záznamu
+        + position_lon: (number) - Zemepisná dĺžka záznamu
     + Headers
 
             Authorization: Bearer jwt_token
@@ -281,9 +282,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Add Participant [PUT /workout/addParticipant]
-+ workout_id (int) - Id workoutu ku ktorému sa pridáva nový účastník
-+ participant_id (int) - Id nového účastníka
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workoutu ku ktorému sa pridáva nový účastník
+        + participant_id: (number) - Id nového účastníka
     + Headers
 
             Authorization: Bearer jwt_token
@@ -344,11 +346,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Upadate Participant Data [PUT /workout/updateParticipantData]
-+ workout_id (int): Id workoutu ktorému sa nastavujú údaje
-+ total_distance (float): Celková vzdialenosť, ktorú účastník prešiel
-+ avg_speed (float): Priemerná rýchlosť, ktorou účastník išiel
-+ max_speed (float): Najvyššia rýchlosť, ktorou účastník išiel
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workoutu ktorému sa nastavujú údaje
+        + total_distance: (number) - Celková vzdialenosť, ktorú účastník prešiel
+        + avg_speed: (number) - Priemerná rýchlosť, ktorou účastník išiel
+        + max_speed: (number) - Najvyššia rýchlosť, ktorou účastník išiel
     + Headers
 
             Authorization: Bearer jwt_token
@@ -387,6 +390,14 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 ### Get Workout List [GET /workout/getList]
 
 + Response 200 (application/json)
+    + Attributes
+        + workout_id: (number) - Id workoutu
+        + workout_name: (string) - Meno workoutu
+        + workout_start: (string) - Dátum a čas kedy začal workout
+        + user_id: (number) - Id používateľa pre ktorému patria údaje
+        + total_distance: (number) - Celková vzdialenosť prejdená účastníkom
+        + avg_speed: (number) - Priemerná rýchlosť účastníka
+        + max_speed: (number) - Največšia rýchlosť účastníka
     + Headers
 
             Authorization: Bearer jwt_token
@@ -453,9 +464,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Get Workout Data [GET /workout/getData]
-+ workout_id (int): Id workoutu z ktorého si pýtame záznamy
-+ from_sampe (int): Id od ktorého sa posielajú záznamy
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workoutu z ktorého si pýtame záznamy
+        + from_sampe: (number) - Id od ktorého sa posielajú záznamy
     + Headers
 
             Authorization: Bearer jwt_token
@@ -469,6 +481,14 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
 + Response 200 (application/json)
 
+    + Attributes
+        + workout_id: (number) - Id workoutu, ktorému patrí záznam
+        + user_id: (number) - Id účastníku, ktorému patrí záznam
+        + sample_id: (number) - Id záznamu
+        + sample_time: (string) - Dátum a čas namerania záznamu vo formáte dd-mm-yyyy HH:MM:SS
+        + position_lat: (number) - Zemepisná šírka záznamu
+        + position_lon: (number) - Zemepisná dĺžka záznamu
+        
     + Body
     
             {
@@ -509,8 +529,9 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Delete Workout [DELETE /workout/deleteWorkout]
-+ workout_id (int): Id workoutu, ktorý chceme zmazať
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workoutu, ktorý chceme zmazať
     + Headers
 
             Authorization: Bearer jwt_token
@@ -548,9 +569,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Share Workout [PUT /workout/shareWorkout]
-+ workout_id (int): Id workout, ktorý bude zdielaný
-+ shared_user_id (int): Id používateľa, s ktorým chceme zdieľať workout
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workout, ktorý bude zdielaný
+        + shared_user_id: (number) - Id používateľa, s ktorým chceme zdieľať workout
     + Headers
 
             Authorization: Bearer jwt_token
@@ -597,9 +619,10 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             }
 
 ### Unshare Workout [DELETE /workout/unshareWorkout]
-+ workout_id (int): Id workout, ktorý chceme prestať zdieľať
-+ shared_user_id (int): Id používateľa, s ktorým chceme prestať zdieľať workout
 + Request (application/json)
+    + Attributes
+        + workout_id: (number) - Id workout, ktorý chceme prestať zdieľať
+        + shared_user_id: (number) - Id používateľa, s ktorým chceme prestať zdieľať workout
     + Headers
 
             Authorization: Bearer jwt_token
