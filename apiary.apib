@@ -191,7 +191,7 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
         {
         "error": "User doesn't exist"
-        }        
+        }
 
 
 ## Workout [/workout]
@@ -202,10 +202,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
-            "workout_name": "TEst4",
-            "workout_start": "21-4-2005 10:11:12"
-        }
+    + Body
+
+            {
+                "workout_name": "TEst4",
+                "workout_start": "21-4-2005 10:11:12"
+            }
 
 + Response 201 (application/json)
 
@@ -231,21 +233,23 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
-            "workout_id": 1,
-            "samples": [
-                {
-                    "sample_time": "21-4-2024 12:22:44",
-                    "position_lat": 23.46,
-                    "position_lon": 10.1
-                },
-                {
-                    "sample_time": "22-4-2024 12:22:45",
-                    "position_lat": 23.46,
-                    "position_lon": 10.431
-                }
-            ]
-        }
+    + Body
+
+            {
+                "workout_id": 1,
+                "samples": [
+                    {
+                        "sample_time": "21-4-2024 12:22:44",
+                        "position_lat": 23.46,
+                        "position_lon": 10.1
+                    },
+                    {
+                        "sample_time": "22-4-2024 12:22:45",
+                        "position_lat": 23.46,
+                        "position_lon": 10.431
+                    }
+                ]
+            }
 
 + Response 201 (application/json)
 
@@ -278,10 +282,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
-            "workout_id": 1,
-            "participant_id": 2
-        }
+    + Body
+
+            {
+                "workout_id": 1,
+                "participant_id": 2
+            }
 
 + Response 201 (application/json)
 
@@ -382,10 +388,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
-            "workout_id": 1,
-            "from_sampe": 0
-        }
+    + Body
+
+            {
+                "workout_id": 1,
+                "from_sampe": 0
+            }
 
 + Response 200 (application/json)
 
@@ -434,10 +442,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
     + Headers
 
             Authorization: Bearer jwt_token
+    
+    + Body
 
-        {
-            "workout_id": 1
-        }
+            {
+                "workout_id": 1
+            }
 
 + Response 200 (application/json)
 
@@ -472,10 +482,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
-            "workout_id": 1,
-            "shared_user_id": 2
-        }
+    + Body
+
+            {
+                "workout_id": 1,
+                "shared_user_id": 2
+            }
         
 + Response 200 (application/json)
 
@@ -518,10 +530,12 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
 
             Authorization: Bearer jwt_token
 
-        {
-            "workout_id": 1,
-            "shared_user_id": 2
-        }
+    + Body
+
+            {
+                "workout_id": 1,
+                "shared_user_id": 2
+            }
         
 + Response 200 (application/json)
 
@@ -556,3 +570,220 @@ Backend pre workout aplikáciu vytváranú na predmete MTAA na FIIT STU.
             {
                 "message": "Workout isn't shared"
             }
+            
+            
+## Friend requests [/friends/request]
+### Create Friend Request [POST /friends/request/create]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+
+            {
+            "email": "friend@example.com"
+            }
+
++ Response 201 (application/json)
+
+        {
+        "message": "Friend request made"
+        }
+
++ Response 409 (application/json)
+
+        {
+        "message": "Request made before or users already friends"
+        }
+
++ Response 404 (application/json)
+
+        {
+        "message": "User with entered email doesn't exist"
+        }
+
++ Response 409 (application/json)
+
+        {
+        "message": "User's own email entered"
+        }
+
+### Get Friend Request List [GET /friends/request/get]
+
++ Request
+    + Headers
+
+            Authorization: Bearer jwt_token
+
++ Response 200 (application/json)
+
+        [
+            {
+            "user_id": 2,
+            "user_name": "alice",
+            "email": "alice@example.com"
+            },
+            {
+            "user_id": 3,
+            "user_name": "bob",
+            "email": "bob@example.com"
+            }
+        ]
+
+### Accept Friend Request [PATCH /friends/request/accept]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+    
+            {
+            "friend_id": 2
+            }
+
++ Response 201 (application/json)
+
+        {
+        "message": "Friend request accepted"
+        }
+
++ Response 404 (application/json)
+
+        {
+        "message": "Friend request doesn't exist"
+        }
+
+### Reject Friend Request [DELETE /friends/request/reject]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+
+            {
+            "friend_id": 2
+            }
+
++ Response 200 (application/json)
+
+        {
+        "message": "Friend request removed"
+        }
+
++ Response 404 (application/json)
+
+        {
+        "message": "Friend request doesn't exist"
+        }
+
+
+## Friends [/friends]
+
+### Get Friend list [GET /friends/get]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
++ Response 200 (application/json)
+
+        [
+            {
+            "user_id": 2,
+            "user_name": "alice",
+            "email": "alice@example.com"
+            },
+            {
+            "user_id": 3,
+            "user_name": "bob",
+            "email": "bob@example.com"
+            }
+        ]
+
+### Remove Friend [DELETE /friends/remove]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+
+            {
+            "friend_id": 2
+            }
+
++ Response 200 (application/json)
+
+        {
+        "message": "Friend removed"
+        }
+
++ Response 404 (application/json)
+
+        {
+        "message": "Friend doesn't exist"
+        }
+
+### Get Friend Profile [GET /friends/getuser]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+    
+            {
+            "friend_id": 2
+            }
+
++ Response 200 (application/json)
+
+        {
+        "user_id": 2,
+        "user_name": "alice",
+        "email": "alice@example.com"
+        }
+
++ Response 404 (application/json)
+
+        {
+        "message": "User not in friends"
+        }
+
+### Get Friend Profile Photo [GET /friends/getphoto]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer jwt_token
+
+    + Body
+    
+            {
+            "friend_id": 2
+            }
+
++ Response 200 (image/jpg)
+
+        (binary image content)
+
++ Response 404 (application/json)
+
+        {
+        "error": "No profile picture provided"
+        }
+
++ Response 404 (application/json)
+
+        {
+        "message": "User not in friends"
+        }
