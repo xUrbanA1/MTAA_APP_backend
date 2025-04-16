@@ -187,6 +187,7 @@ def deleteWorkout():
 
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id).count() == 0):
         Workout.query.filter_by(workout_id=workout_id).delete()
+    db.session.commit()
     return  jsonify({'message': "Workout deleted successfully"}), 200
 
 @workout.put("/workout/shareWorkout")
@@ -206,7 +207,7 @@ def shareWorkoutPut():
     if(WorkoutDataShared.query.filter_by(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id).count() != 0):
         return jsonify({'message': "Workout is alredy shared"}), 200
 
-    sharedWorkout = WorkoutDataShared(workout_id, current_user, shared_user_id)
+    sharedWorkout = WorkoutDataShared(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id)
     db.session.add(sharedWorkout)
     db.session.commit()
     return jsonify({'message': "Workout shared successfully"}), 200
@@ -231,6 +232,7 @@ def shareWorkoutDelete():
         return jsonify({'message': "Workout isn't shared"}), 200
     
     WorkoutDataShared.query.filter_by(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id).delete()
+    db.session.commit()
     return jsonify({'message': "Workout unshared successfully"}), 200
 
 @sock.route('/workout/WorkoutSocket')
