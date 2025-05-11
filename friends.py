@@ -114,7 +114,7 @@ def remove_friend():
         return jsonify({"message": "Friend doesn't exist"}), 404
 
 
-@friends.get("/friends/getuser")
+@friends.post("/friends/getuser")
 @jwt_required()
 def get_user():
     current_user = int(get_jwt_identity())
@@ -127,7 +127,7 @@ def get_user():
         return jsonify({"message": "User not in friends"}), 404
 
 
-@friends.get("/friends/getphoto")
+@friends.post("/friends/getphoto")
 @jwt_required()
 def get_photo():
     current_user = int(get_jwt_identity())
