@@ -89,7 +89,7 @@ class WorkoutDataSample(db.Model):
             'sample_id': self.sample_id,
             'workout_id': self.workout_id, 
             'user_id': self.user_id,
-            'sample_time': self.sample_time,
+            'sample_time': self.sample_time.isoformat(),
             'position_lat': self.position_lat,
             'position_lon': self.position_lon,
         }

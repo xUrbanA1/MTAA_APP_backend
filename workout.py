@@ -1,8 +1,11 @@
-from flask import request, jsonify, json, Blueprint
+from flask import request, jsonify, Blueprint
 from flask_sock import Sock
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database import *
 from datetime import datetime
+import jwt as pyjwt
+import os
+import json
 
 
 workout = Blueprint('workout', __name__)
@@ -109,7 +112,7 @@ def updateParticipantData():
     avg_speed = data.get('avg_speed')
     max_speed = data.get('max_speed')
 
-    if(type(workout_id) != int or type(current_user) != int or (type(total_distance) != int and type(total_distance) != float and total_distance != None) or (type(avg_speed) != int and type(avg_speed) != float and total_distance != None) or (type(max_speed) != int and type(max_speed) != float and total_distance != None)):
+    if(type(workout_id) != int or type(current_user) != int or (type(total_distance) != int and type(total_distance) != float and total_distance != None) or (type(avg_speed) != int and type(avg_speed) != float and avg_speed != None) or (type(max_speed) != int and type(max_speed) != float and max_speed != None)):
         return jsonify({'message': "Wrong data type"}), 400
     
     if (Workout.query.filter_by(workout_id=workout_id).count() == 0 or WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
@@ -239,13 +242,27 @@ def shareWorkoutDelete(workout_id,shared_user_id):
     db.session.commit()
     return jsonify({'message': "Workout unshared successfully"}), 200
 
-@sock.route('/workout/WorkoutSocket')
-@jwt_required()
+@sock.route('/workout/socket')
 def sockTest(ws):
-    current_user = int(get_jwt_identity())
+    token = request.args.get("token")
+    if not token:
+        ws.send("Missing token")
+        ws.close()
+        return
+    try:
+        decoded = pyjwt.decode(token, os.getenv('JWT_SECRET_KEY'), algorithms=["HS256"])
+        user_identity = decoded["sub"]
+    except pyjwt.ExpiredSignatureError:
+        ws.send("Token expired")
+        ws.close()
+    except pyjwt.InvalidTokenError:
+        ws.send("Invalid token")
+        ws.close()
+        
+    current_user = user_identity
     while True:
         text = ws.receive()
-        data = json.load(text)
+        data = json.loads(text)
         workout_id = data['workout_id']
         last_id = data['load_from']
         
@@ -260,6 +277,10 @@ def sockTest(ws):
                 db.session.add(new_sample)
             db.session.commit()
 
-            sampleList = WorkoutDataSample.query.filter(WorkoutDataSample.sample_id >= last_id, WorkoutDataSample.user_id != current_user, workout_id=workout_id).all()
-            ws.send(jsonify(samples=[e.serialize() for e in sampleList]))
+        sampleList = WorkoutDataSample.query.filter(WorkoutDataSample.sample_id >= last_id, WorkoutDataSample.user_id != current_user, WorkoutDataSample.workout_id == workout_id).all()
+        #sampleList = WorkoutDataSample.query.filter(WorkoutDataSample.sample_id >= last_id, WorkoutDataSample.workout_id==workout_id).all()
+        samplesReturn=[e.serialize() for e in sampleList]
+        ws.send(json.dumps({"samples": samplesReturn}))
+            
+        
 
