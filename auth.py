@@ -22,6 +22,8 @@ def createUser():
     user_name = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    if not (user_name):
+        user_name = email
     if not (user_name and email and password):
         return jsonify({'message': 'Some information missing'}), 400
     password_hashed = bcrypt.generate_password_hash(password).decode("utf-8")
