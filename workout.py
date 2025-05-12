@@ -134,7 +134,7 @@ def updateParticipantData():
 def getWorkoutList():
     current_user = int(get_jwt_identity())
 
-    workoutsList = db.session.query(Workout,WorkoutParticipant).join(WorkoutParticipant).filter(WorkoutParticipant.user_id==current_user).all()
+    workoutsList = db.session.query(Workout,WorkoutParticipant).join(Workout.participants).filter(WorkoutParticipant.user_id==current_user).all()
     return jsonify(workouts=[WorkoutsListSerialize(e) for e in workoutsList]), 200
 
 @workout.get("/workout/getListFriend/<friend_id>")
