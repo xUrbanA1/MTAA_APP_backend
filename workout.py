@@ -78,25 +78,25 @@ def addParticipant():
     current_user = int(get_jwt_identity())
 
     workout_id = data.get('workout_id')
-    participant_id = data.get('participant_id')
+    participant_email = data.get('participant_email')
 
     
-    if(type(participant_id) != int or type(workout_id) != int or type(current_user) != int):
+    if(type(participant_email) != str or type(workout_id) != int or type(current_user) != int):
         return jsonify({'message': "Wrong data type"}), 400
     
-    if(User.query.filter_by(user_id=participant_id).count()==0):
+    if(User.query.filter_by(email=participant_email).count()==0):
         return jsonify({'message': "User doesn't exist"}), 404
     
-    if(Friend.query.filter_by(user_id=current_user, friend_id=participant_id, accepted=True).count()==0):
+    if(Friend.query.join(User, friend_id=User.user_id).filter_by(user_id=current_user, email=participant_email, accepted=True).count()==0):
         return jsonify({'message': "New participant is not a friend"}), 403
     
     if (Workout.query.filter_by(workout_id=workout_id).count() == 0 or WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
         return jsonify({'message': "Workout doesn't exist"}), 404
 
-    if (WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=participant_id).count() != 0):
+    if (WorkoutParticipant.query.join(User, friend_id=User.user_id).filter_by(workout_id=workout_id, email=participant_email).count() != 0):
         return jsonify({'message': "Participant already exist"}), 403
-    
-    new_participant = WorkoutParticipant(workout_id=workout_id, user_id=participant_id)
+    participant = User.query.filter_by(email=participant_email).first()
+    new_participant = WorkoutParticipant(workout_id=workout_id, user_id=participant.user_id)
     db.session.add(new_participant)
     db.session.commit()
     return jsonify({'message': "Participant added succefully"}), 201
