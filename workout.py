@@ -137,6 +137,15 @@ def getWorkoutList():
     workoutsList = db.session.query(Workout,WorkoutParticipant).join(WorkoutParticipant).filter(WorkoutParticipant.user_id==current_user).all()
     return jsonify(workouts=[WorkoutsListSerialize(e) for e in workoutsList]), 200
 
+@workout.get("/workout/getListFriend/<friend_id>")
+@jwt_required()
+def getWorkoutListFriend(friend_id):
+    current_user = int(get_jwt_identity())
+    friend_id= int(friend_id)
+
+    workoutsList = db.session.query(Workout, WorkoutParticipant).join(Workout.participants).join(Workout.shared).filter(WorkoutDataShared.shared_with==current_user, WorkoutDataShared.user_id==friend_id).all()
+    return jsonify(workouts=[WorkoutsListSerialize(e) for e in workoutsList]), 200
+
 def WorkoutsListSerialize(self):
     return {
             'workout_id': self[0].workout_id, 
@@ -200,33 +209,32 @@ def deleteWorkout(workout_id):
 def shareWorkoutPut():
     data = request.get_json()
     workout_id = data.get('workout_id')
-    shared_user_id = data.get('shared_user_id')
+    shared_user_email = data.get('shared_user_email')
     current_user = int(get_jwt_identity())
 
-    if(type(workout_id) != int or type(shared_user_id) != int):
-        return jsonify({'message': "Wrong data type"}), 400
+    if(type(workout_id) != int or type(shared_user_email) != str):
+        return jsonify({'message': "Wrong data type"}), 401
     
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
         return jsonify({'message': "Workout doesn't exist"}), 400
 
-    if(WorkoutDataShared.query.filter_by(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id).count() != 0):
+    if(WorkoutDataShared.query.join(User, User.email==shared_user_email).filter(WorkoutDataShared.workout_id==workout_id, WorkoutDataShared.user_id==current_user, WorkoutDataShared.shared_with==User.user_id).count() != 0):
         return jsonify({'message': "Workout is alredy shared"}), 200
-
-    sharedWorkout = WorkoutDataShared(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id)
+    sharedUser = User.query.filter_by(email=shared_user_email).first()
+    sharedWorkout = WorkoutDataShared(workout_id=workout_id, user_id=current_user, shared_with=sharedUser.user_id)
     db.session.add(sharedWorkout)
     db.session.commit()
     return jsonify({'message': "Workout shared successfully"}), 200
 
 
 
-@workout.delete("/workout/unshareWorkout/<workout_id>:<shared_user_id>")
+@workout.delete("/workout/unshareWorkout/<workout_id>:<shared_user_email>")
 @jwt_required()
-def shareWorkoutDelete(workout_id,shared_user_id):
+def shareWorkoutDelete(workout_id,shared_user_email):
     #data = request.get_json()
     #workout_id = data.get('workout_id')x
     #shared_user_id = data.get('shared_user_id')
     workout_id = int(workout_id)
-    shared_user_id = int(shared_user_id)
     current_user = int(get_jwt_identity())
     
     if(type(workout_id) != int or type(shared_user_id) != int):
@@ -235,10 +243,10 @@ def shareWorkoutDelete(workout_id,shared_user_id):
     if(WorkoutParticipant.query.filter_by(workout_id=workout_id, user_id=current_user).count() == 0):
         return jsonify({'message': "Workout doesn't exist"}), 400
 
-    if(WorkoutDataShared.query.filter_by(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id).count() == 0):
+    if(WorkoutDataShared.query.join(User, email=shared_user_email).filter_by(workout_id=workout_id, user_id=current_user, shared_with=User.user_id).count() == 0):
         return jsonify({'message': "Workout isn't shared"}), 200
     
-    WorkoutDataShared.query.filter_by(workout_id=workout_id, user_id=current_user, shared_with=shared_user_id).delete()
+    WorkoutDataShared.query.join(User, email=shared_user_email).filter_by(workout_id=workout_id, user_id=current_user, shared_with=User.user_id).delete()
     db.session.commit()
     return jsonify({'message': "Workout unshared successfully"}), 200
 

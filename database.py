@@ -38,7 +38,8 @@ class Workout(db.Model):
     workout_start = db.Column(db.DateTime)
 
     # Relationship to 'workouts_participants'
-    participants = db.relationship('WorkoutParticipant', backref='workout', lazy=True)
+    participants = db.relationship('WorkoutParticipant', back_populates='workout', lazy=True)
+    shared = db.relationship('WorkoutDataShared', back_populates='workout')
 
     def __repr__(self):
         return f'<Workout {self.workout_name}>'
@@ -59,6 +60,8 @@ class WorkoutParticipant(db.Model):
     avg_speed = db.Column(db.Float)
     max_speed = db.Column(db.Float)
 
+    workout = db.relationship('Workout', back_populates='participants')
+    
     def __repr__(self):
         return f'<WorkoutParticipant {self.workout_id} - {self.user_id}>'
     
@@ -100,6 +103,8 @@ class WorkoutDataShared(db.Model):
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.workout_id', ondelete='CASCADE'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
     shared_with = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
+
+    workout = db.relationship('Workout', back_populates='shared')
 
     def __repr__(self):
         return f'<WorkoutDataShared {self.workout_id} - {self.user_id}>'
