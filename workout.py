@@ -141,7 +141,7 @@ def WorkoutsListSerialize(self):
     return {
             'workout_id': self[0].workout_id, 
             'workout_name': self[0].workout_name,
-            'workout_start': self[0].workout_start,
+            'workout_start': self[0].workout_start.isoformat(),
             'user_id': self[1].user_id,
             'total_distance': self[1].total_distance,
             'avg_speed': self[1].avg_speed,
