@@ -27,7 +27,11 @@ def make_friend_request():
     friend = User.query.filter_by(email=friend_email).first()
 
     if friend:
-        if not Friend.query.filter_by(friend_id=user.user_id).first():
+        existing_request = Friend.query.filter(
+            ((Friend.user_id == user.user_id) & (Friend.friend_id == friend.user_id)) |
+            ((Friend.user_id == friend.user_id) & (Friend.friend_id == user.user_id))
+            ).first()
+        if not existing_request:
             friend_row = Friend(user_id=user.user_id,
                                 friend_id=friend.user_id, accepted=False)
             db.session.add(friend_row)
