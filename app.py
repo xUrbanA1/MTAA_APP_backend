@@ -6,6 +6,8 @@ from database import *
 from auth import auth
 from friends import friends
 from workout import workout
+import firebase_admin
+from firebase_admin import credentials
 
 app = Flask(__name__)
 
@@ -17,6 +19,9 @@ app.register_blueprint(database)
 app.register_blueprint(auth)
 app.register_blueprint(friends)
 app.register_blueprint(workout)
+
+cred = credentials.Certificate("firebase-adminsdk.json")
+firebase_admin.initialize_app(cred)
 
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)

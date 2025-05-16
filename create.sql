@@ -3,7 +3,8 @@ CREATE TABLE users(
 	user_name VARCHAR(50),
 	email VARCHAR(255) UNIQUE,
 	password_hashed TEXT,
-	user_photo BYTEA
+	user_photo BYTEA,
+	push_token VARCHAR(255)
 );
 
 CREATE TABLE friend_list(
