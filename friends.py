@@ -136,7 +136,7 @@ def get_user():
 def get_photo():
     current_user = int(get_jwt_identity())
     friend_id = int(request.json.get("friend_id"))
-    if Friend.query.filter_by(user_id=current_user, friend_id=friend_id).first() or Friend.query.filter_by(user_id=current_user, friend_id=friend_id).first():
+    if Friend.query.filter_by(user_id=current_user, friend_id=friend_id).first() or Friend.query.filter_by(user_id=friend_id, friend_id=current_user).first():
         user = User.query.filter_by(user_id=friend_id).first()
         if user.user_photo:
             file_obj = io.BytesIO(user.user_photo)
