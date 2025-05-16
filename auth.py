@@ -94,11 +94,19 @@ def update_photo():
     current_user = int(get_jwt_identity())
     user = User.query.filter_by(user_id=current_user).first()
 
-    file = request.data
-    if not file:
-        return jsonify({"error": "No file provided"}), 400
+    # file = request.data
+    # if not file:
+    #     return jsonify({"error": "No file provided"}), 400
 
-    user.user_photo = file
+    if 'image' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    user.user_photo = file.read()
     db.session.commit()
 
     return jsonify({"message": f"File uploaded successfully!"}), 201
