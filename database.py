@@ -12,6 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(255), unique=True)
     password_hashed = db.Column(db.Text)
     user_photo = db.Column(db.LargeBinary)
+    push_token = db.Column(db.String(255))
 
     # Relationship to 'friend_list'
     friends = db.relationship('Friend', foreign_keys='Friend.user_id', backref='user', lazy=True)

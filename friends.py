@@ -3,6 +3,7 @@ from flask import request, jsonify, Blueprint, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 from database import *
+from firebase_admin import messaging
 
 friends = Blueprint('friends', __name__)
 
@@ -37,6 +38,17 @@ def make_friend_request():
             db.session.add(friend_row)
             try:
                 db.session.commit()
+                
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title="New friend request",
+                        body="You have received a new friend request.",
+                    ),
+                    tokens=friend.push_token,
+                )
+
+                response = messaging.send(message)
+
                 return jsonify({"message": "Friend request made"}), 201
             except IntegrityError:
                 return jsonify({"message": "Request made before or users already friends"}), 409

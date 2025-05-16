@@ -148,3 +148,16 @@ def delete_user():
     else:
         return jsonify({"error": "User doesn't exist"}), 401
     
+
+@auth.post('/auth/registerToken')
+@jwt_required()
+def register_token():
+    current_user = int(get_jwt_identity())
+    user = User.query.filter_by(user_id=current_user).first()
+    new_token = request.json.get("token")
+    if not new_token:
+        return jsonify({'message': 'No token passed'}), 400
+    user.push_token = new_token
+    db.session.commit()
+
+    return jsonify({"message": "Token registered"}), 200

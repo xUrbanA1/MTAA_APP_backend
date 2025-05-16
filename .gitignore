@@ -16,3 +16,4 @@ instance/
 
 # Environment variable files
 .env
+firebase-adminsdk.json
